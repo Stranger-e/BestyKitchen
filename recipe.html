@@ -159,16 +159,6 @@
   }
   .back-link:hover { color: var(--dark); }
 
-  .edit-btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: none; border: 1px solid var(--border);
-    color: var(--mid); font-size: 12px; padding: 6px 14px;
-    border-radius: 4px; cursor: pointer; font-family: 'DM Sans', sans-serif;
-    text-decoration: none; margin-left: 12px;
-    transition: all 0.2s;
-  }
-  .edit-btn:hover { border-color: var(--dark); color: var(--dark); }
-
   @media (max-width: 768px) {
     .recipe-layout { grid-template-columns: 1fr; padding: 24px 16px; gap: 24px; }
     .recipe-title { font-size: 38px; }
@@ -185,7 +175,6 @@
   <a href="index.html" class="logo">Besty<span>Kitchen</span></a>
   <ul>
     <li><a href="index.html">Recipes</a></li>
-    <li><a href="admin.html" class="nav-add">+ Add Recipe</a></li>
   </ul>
 </nav>
 
@@ -235,9 +224,8 @@
 
       <div class="recipe-layout">
         <div class="recipe-main">
-          <div style="display:flex;align-items:center;margin-bottom:28px">
+          <div style="margin-bottom:28px">
             <a href="index.html" class="back-link">← All Recipes</a>
-            <a href="admin.html?edit=${recipe.id}" class="edit-btn">✏ Edit</a>
           </div>
 
           ${recipe.description ? `<div class="recipe-description">${recipe.description}</div>` : ''}
