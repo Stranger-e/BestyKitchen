@@ -8,404 +8,71 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --red: #E8272A;
-    --dark: #1A1A1A;
-    --cream: #F5F0E8;
-    --warm-white: #FEFCF8;
-    --gold: #C9952A;
-    --mid: #6B6560;
-    --border: rgba(26,26,26,0.12);
-  }
+  :root { --red:#E8272A; --dark:#1A1A1A; --cream:#F5F0E8; --warm-white:#FEFCF8; --mid:#6B6560; --border:rgba(26,26,26,0.12); }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'DM Sans',sans-serif; background:var(--warm-white); color:var(--dark); min-height:100vh; }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  nav { background:var(--dark); padding:0 40px; display:flex; align-items:center; justify-content:space-between; height:60px; position:sticky; top:0; z-index:100; }
+  .logo { font-family:'Bebas Neue',sans-serif; font-size:26px; letter-spacing:2px; color:var(--cream); text-decoration:none; }
+  .logo span { color:var(--red); }
+  nav ul { list-style:none; display:flex; gap:32px; }
+  nav ul a { color:rgba(245,240,232,0.65); text-decoration:none; font-size:13px; font-weight:500; letter-spacing:0.5px; text-transform:uppercase; transition:color 0.2s; }
+  nav ul a:hover { color:var(--cream); }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--warm-white);
-    color: var(--dark);
-    min-height: 100vh;
-  }
+  .hero { background:var(--dark); padding:60px 40px 50px; position:relative; overflow:hidden; }
+  .hero::before { content:'BESTY KITCHEN'; position:absolute; font-family:'Bebas Neue',sans-serif; font-size:180px; color:rgba(255,255,255,0.03); top:-20px; right:-20px; letter-spacing:10px; line-height:1; pointer-events:none; }
+  .hero-tag { display:inline-flex; align-items:center; gap:8px; background:rgba(232,39,42,0.15); border:1px solid rgba(232,39,42,0.3); color:#ff6b6d; font-size:11px; font-weight:500; letter-spacing:1.5px; text-transform:uppercase; padding:5px 12px; border-radius:2px; margin-bottom:20px; }
+  .hero-tag::before { content:''; width:6px; height:6px; background:var(--red); border-radius:50%; animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+  .hero h1 { font-family:'Bebas Neue',sans-serif; font-size:68px; color:var(--cream); letter-spacing:3px; line-height:0.95; max-width:600px; }
+  .hero h1 em { font-style:normal; color:var(--red); }
+  .hero p { color:rgba(245,240,232,0.55); font-size:15px; line-height:1.7; max-width:460px; margin-top:18px; font-family:'Lora',serif; font-style:italic; }
+  .hero-stats { display:flex; gap:40px; margin-top:36px; }
+  .stat-num { font-family:'Bebas Neue',sans-serif; font-size:36px; color:var(--cream); letter-spacing:1px; line-height:1; }
+  .stat-label { font-size:11px; color:rgba(245,240,232,0.4); letter-spacing:1px; text-transform:uppercase; margin-top:2px; }
 
-  /* NAV */
-  nav {
-    background: var(--dark);
-    padding: 0 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 60px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
+  .filter-bar { background:var(--cream); border-bottom:1px solid var(--border); padding:0 40px; display:flex; align-items:center; gap:4px; overflow-x:auto; scrollbar-width:none; }
+  .filter-bar::-webkit-scrollbar { display:none; }
+  .filter-btn { background:none; border:none; padding:16px 18px; font-size:13px; font-weight:500; color:var(--mid); cursor:pointer; white-space:nowrap; font-family:'DM Sans',sans-serif; border-bottom:2px solid transparent; transition:all 0.2s; }
+  .filter-btn:hover { color:var(--dark); }
+  .filter-btn.active { color:var(--red); border-bottom-color:var(--red); }
 
-  .logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 26px;
-    letter-spacing: 2px;
-    color: var(--cream);
-    text-decoration: none;
-  }
+  .search-bar { padding:20px 40px; background:var(--warm-white); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:12px; }
+  .search-input { flex:1; max-width:400px; background:var(--cream); border:1px solid var(--border); padding:10px 16px; font-size:14px; font-family:'DM Sans',sans-serif; color:var(--dark); border-radius:4px; outline:none; transition:border-color 0.2s; }
+  .search-input:focus { border-color:var(--red); }
+  .search-input::placeholder { color:var(--mid); }
+  .recipe-count { font-size:13px; color:var(--mid); margin-left:auto; }
+  .recipe-count span { color:var(--dark); font-weight:500; }
 
-  .logo span { color: var(--red); }
+  .recipes-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:24px; padding:40px; }
 
-  nav ul {
-    list-style: none;
-    display: flex;
-    gap: 32px;
-  }
+  .recipe-card { background:var(--warm-white); border:1px solid var(--border); border-radius:6px; overflow:hidden; cursor:pointer; transition:transform 0.2s,box-shadow 0.2s; text-decoration:none; color:inherit; display:block; }
+  .recipe-card:hover { transform:translateY(-3px); box-shadow:0 12px 40px rgba(0,0,0,0.1); }
+  .card-img { width:100%; height:200px; position:relative; background:linear-gradient(135deg,#f0ebe0,#e8e0d0); display:flex; align-items:center; justify-content:center; font-size:56px; }
+  .card-img img { width:100%; height:100%; object-fit:cover; position:absolute; inset:0; }
+  .card-country-badge { position:absolute; top:12px; left:12px; background:var(--dark); color:var(--cream); font-size:10px; font-weight:500; letter-spacing:1px; text-transform:uppercase; padding:4px 10px; border-radius:2px; z-index:1; }
+  .card-body { padding:18px 20px 20px; }
+  .card-episode { font-size:11px; color:var(--red); font-weight:500; letter-spacing:0.8px; text-transform:uppercase; margin-bottom:6px; }
+  .card-title { font-family:'Lora',serif; font-size:20px; font-weight:600; color:var(--dark); line-height:1.3; margin-bottom:8px; }
+  .card-desc { font-size:13px; color:var(--mid); line-height:1.6; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .card-footer { display:flex; align-items:center; gap:16px; margin-top:14px; padding-top:14px; border-top:1px solid var(--border); font-size:12px; color:var(--mid); }
 
-  nav ul a {
-    color: rgba(245,240,232,0.65);
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
+  .no-results { grid-column:1/-1; text-align:center; padding:80px 40px; color:var(--mid); }
+  .no-results h3 { font-family:'Bebas Neue',sans-serif; font-size:32px; letter-spacing:2px; color:var(--dark); margin-top:16px; }
 
-  nav ul a:hover { color: var(--cream); }
+  footer { background:var(--dark); padding:32px 40px; display:flex; align-items:center; justify-content:space-between; margin-top:60px; }
+  footer p { font-size:12px; color:rgba(245,240,232,0.35); }
+  footer a { color:rgba(245,240,232,0.5); text-decoration:none; font-size:12px; }
+  footer a:hover { color:var(--cream); }
 
-  /* HERO */
-  .hero {
-    background: var(--dark);
-    padding: 60px 40px 50px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero::before {
-    content: 'BESTY KITCHEN';
-    position: absolute;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 180px;
-    color: rgba(255,255,255,0.03);
-    top: -20px;
-    right: -20px;
-    letter-spacing: 10px;
-    line-height: 1;
-    pointer-events: none;
-    user-select: none;
-  }
-
-  .hero-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(232,39,42,0.15);
-    border: 1px solid rgba(232,39,42,0.3);
-    color: #ff6b6d;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    padding: 5px 12px;
-    border-radius: 2px;
-    margin-bottom: 20px;
-  }
-
-  .hero-tag::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    background: var(--red);
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
-  }
-
-  .hero h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 68px;
-    color: var(--cream);
-    letter-spacing: 3px;
-    line-height: 0.95;
-    max-width: 600px;
-  }
-
-  .hero h1 em {
-    font-style: normal;
-    color: var(--red);
-  }
-
-  .hero p {
-    color: rgba(245,240,232,0.55);
-    font-size: 15px;
-    line-height: 1.7;
-    max-width: 460px;
-    margin-top: 18px;
-    font-family: 'Lora', serif;
-    font-style: italic;
-  }
-
-  .hero-stats {
-    display: flex;
-    gap: 40px;
-    margin-top: 36px;
-  }
-
-  .stat-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 36px;
-    color: var(--cream);
-    letter-spacing: 1px;
-    line-height: 1;
-  }
-
-  .stat-label {
-    font-size: 11px;
-    color: rgba(245,240,232,0.4);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-top: 2px;
-  }
-
-  /* FILTER BAR */
-  .filter-bar {
-    background: var(--cream);
-    border-bottom: 1px solid var(--border);
-    padding: 0 40px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-
-  .filter-bar::-webkit-scrollbar { display: none; }
-
-  .filter-btn {
-    background: none;
-    border: none;
-    padding: 16px 18px;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--mid);
-    cursor: pointer;
-    white-space: nowrap;
-    font-family: 'DM Sans', sans-serif;
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s;
-  }
-
-  .filter-btn:hover { color: var(--dark); }
-  .filter-btn.active { color: var(--red); border-bottom-color: var(--red); }
-
-  /* SEARCH */
-  .search-bar {
-    padding: 24px 40px;
-    background: var(--warm-white);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .search-input {
-    flex: 1;
-    max-width: 400px;
-    background: var(--cream);
-    border: 1px solid var(--border);
-    padding: 10px 16px;
-    font-size: 14px;
-    font-family: 'DM Sans', sans-serif;
-    color: var(--dark);
-    border-radius: 4px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .search-input:focus { border-color: var(--red); }
-  .search-input::placeholder { color: var(--mid); }
-
-  .recipe-count {
-    font-size: 13px;
-    color: var(--mid);
-    margin-left: auto;
-  }
-
-  .recipe-count span { color: var(--dark); font-weight: 500; }
-
-  /* GRID */
-  .recipes-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1px;
-    background: var(--border);
-    padding: 40px;
-    gap: 24px;
-  }
-
-  .recipe-card {
-    background: var(--warm-white);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    text-decoration: none;
-    color: inherit;
-    display: block;
-  }
-
-  .recipe-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.1);
-  }
-
-  .card-img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    background: var(--cream);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 48px;
-    position: relative;
-  }
-
-  .card-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .card-img-placeholder {
-    width: 100%;
-    height: 200px;
-    background: linear-gradient(135deg, #f0ebe0, #e8e0d0);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 48px;
-  }
-
-  .card-country-badge {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    background: var(--dark);
-    color: var(--cream);
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 2px;
-  }
-
-  .card-body { padding: 18px 20px 20px; }
-
-  .card-episode {
-    font-size: 11px;
-    color: var(--red);
-    font-weight: 500;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .card-title {
-    font-family: 'Lora', serif;
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--dark);
-    line-height: 1.3;
-    margin-bottom: 8px;
-  }
-
-  .card-desc {
-    font-size: 13px;
-    color: var(--mid);
-    line-height: 1.6;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .card-footer {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-top: 14px;
-    padding-top: 14px;
-    border-top: 1px solid var(--border);
-  }
-
-  .card-meta {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 12px;
-    color: var(--mid);
-  }
-
-  .card-meta svg { width: 14px; height: 14px; opacity: 0.6; }
-
-  /* EMPTY STATE */
-  .empty-state {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 80px 40px;
-    color: var(--mid);
-  }
-
-  .empty-state h3 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 32px;
-    letter-spacing: 2px;
-    color: var(--dark);
-    margin-top: 16px;
-  }
-
-  .empty-state p { font-size: 14px; margin-top: 8px; }
-
-  .empty-state a {
-    display: inline-block;
-    margin-top: 20px;
-    background: var(--red);
-    color: #fff;
-    padding: 10px 24px;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    border-radius: 4px;
-    text-transform: uppercase;
-  }
-
-  /* FOOTER */
-  footer {
-    background: var(--dark);
-    padding: 32px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 60px;
-  }
-
-  footer p { font-size: 12px; color: rgba(245,240,232,0.35); }
-
-  footer a { color: rgba(245,240,232,0.5); text-decoration: none; font-size: 12px; }
-  footer a:hover { color: var(--cream); }
-
-  /* RESPONSIVE */
-  @media (max-width: 600px) {
-    nav { padding: 0 16px; }
-    .hero { padding: 40px 16px; }
-    .hero h1 { font-size: 44px; }
-    .filter-bar { padding: 0 16px; }
-    .search-bar { padding: 16px; }
-    .recipes-grid { padding: 16px; gap: 16px; }
-    footer { padding: 24px 16px; flex-direction: column; gap: 12px; text-align: center; }
+  @media(max-width:600px) {
+    nav,footer { padding:0 16px; }
+    .hero { padding:40px 16px; }
+    .hero h1 { font-size:44px; }
+    .filter-bar { padding:0 16px; }
+    .search-bar,.recipes-grid { padding:16px; }
+    .recipes-grid { gap:16px; }
+    footer { margin-top:0; flex-direction:column; gap:12px; text-align:center; padding:24px 16px; }
   }
 </style>
 </head>
@@ -424,40 +91,26 @@
   <h1>Cook Every Dish From <em>Best Ever</em> Food Review Show</h1>
   <p>Recipes from every episode, written for home cooks anywhere in the world.</p>
   <div class="hero-stats">
-    <div>
-      <div class="stat-num" id="total-count">0</div>
-      <div class="stat-label">Recipes</div>
-    </div>
-    <div>
-      <div class="stat-num" id="country-count">0</div>
-      <div class="stat-label">Countries</div>
-    </div>
+    <div><div class="stat-num" id="total-count">6</div><div class="stat-label">Recipes</div></div>
+    <div><div class="stat-num" id="country-count">6</div><div class="stat-label">Countries</div></div>
   </div>
 </div>
 
 <div class="filter-bar">
-  <button class="filter-btn active" onclick="filterRecipes('all', this)">All</button>
-  <button class="filter-btn" onclick="filterRecipes('Asia', this)">Asia</button>
-  <button class="filter-btn" onclick="filterRecipes('Africa', this)">Africa</button>
-  <button class="filter-btn" onclick="filterRecipes('Middle East', this)">Middle East</button>
-  <button class="filter-btn" onclick="filterRecipes('Americas', this)">Americas</button>
-  <button class="filter-btn" onclick="filterRecipes('Europe', this)">Europe</button>
-  <button class="filter-btn" onclick="filterRecipes('Oceania', this)">Oceania</button>
+  <button class="filter-btn active" onclick="doFilter('all',this)">All</button>
+  <button class="filter-btn" onclick="doFilter('Asia',this)">Asia</button>
+  <button class="filter-btn" onclick="doFilter('Africa',this)">Africa</button>
+  <button class="filter-btn" onclick="doFilter('Middle East',this)">Middle East</button>
+  <button class="filter-btn" onclick="doFilter('Americas',this)">Americas</button>
+  <button class="filter-btn" onclick="doFilter('Europe',this)">Europe</button>
 </div>
 
 <div class="search-bar">
-  <input class="search-input" type="text" placeholder="Search recipes or countries..." oninput="searchRecipes(this.value)" />
-  <div class="recipe-count">Showing <span id="showing-count">0</span> recipes</div>
+  <input class="search-input" type="text" placeholder="Search recipes or countries..." oninput="doSearch(this.value)">
+  <div class="recipe-count">Showing <span id="showing">6</span> recipes</div>
 </div>
 
-<div class="recipes-grid" id="recipes-grid">
-  <div class="empty-state">
-    <div style="font-size:48px">🍽️</div>
-    <h3>No Recipes Yet</h3>
-    <p>Start adding recipes from BEFRS episodes.</p>
-    <a href="admin.html">Add First Recipe</a>
-  </div>
-</div>
+<div class="recipes-grid" id="grid"></div>
 
 <footer>
   <p>Not affiliated with Best Ever Food Review Show. Fan project by BestyKitchen.</p>
@@ -465,116 +118,43 @@
 </footer>
 
 <script>
-  // ---- DATA STORE ----
-  function getRecipes() {
-    try { return JSON.parse(localStorage.getItem('bk_recipes') || '[]'); } catch { return []; }
-  }
+const RECIPES = [
+  { id:1, title:"Bún Bò Huế", country:"Vietnam", region:"Asia", episode:"BEFRS · Vietnam Series", description:"A fiery, lemongrass-scented beef noodle soup from the imperial city of Huế — bolder and spicier than pho, with a deep, complex broth.", cookTime:120, servings:4, emoji:"🍜" },
+  { id:2, title:"Doro Wat", country:"Ethiopia", region:"Africa", episode:"BEFRS · Ethiopia Series", description:"Ethiopia's most beloved dish — slow-cooked chicken in a deep berbere sauce with hard-boiled eggs. Rich, warming, and unforgettable.", cookTime:90, servings:4, emoji:"🍗" },
+  { id:3, title:"Al Pastor Tacos", country:"Mexico", region:"Americas", episode:"BEFRS · Mexico City Series", description:"Marinated pork slow-roasted on a vertical spit with pineapple, served in corn tortillas with onion, cilantro, and lime.", cookTime:60, servings:6, emoji:"🌮" },
+  { id:4, title:"Butter Chicken", country:"India", region:"Asia", episode:"BEFRS · India Series", description:"Tender tandoor-roasted chicken in a velvety tomato-cream sauce scented with fenugreek and warming spices. The dish that conquered the world.", cookTime:75, servings:4, emoji:"🍛" },
+  { id:5, title:"Beef Rendang", country:"Indonesia", region:"Asia", episode:"BEFRS · Indonesia Series", description:"Slow-cooked beef in a thick, spiced coconut paste until almost dry — intensely flavoured, impossibly tender, and worth every minute.", cookTime:180, servings:6, emoji:"🥘" },
+  { id:6, title:"Harira Soup", country:"Morocco", region:"Africa", episode:"BEFRS · Morocco Series", description:"A hearty Moroccan soup of tomatoes, lentils, chickpeas, and vermicelli — traditionally broken to end the Ramadan fast, but loved year-round.", cookTime:50, servings:6, emoji:"🍲" }
+];
 
-  const REGIONS = {
-    'Vietnam': 'Asia', 'Japan': 'Asia', 'India': 'Asia', 'Thailand': 'Asia',
-    'Indonesia': 'Asia', 'China': 'Asia', 'Korea': 'Asia', 'Philippines': 'Asia',
-    'Cambodia': 'Asia', 'Malaysia': 'Asia', 'Myanmar': 'Asia', 'Bangladesh': 'Asia',
-    'Ethiopia': 'Africa', 'Kenya': 'Africa', 'Nigeria': 'Africa', 'Ghana': 'Africa',
-    'Morocco': 'Africa', 'Egypt': 'Africa', 'Tanzania': 'Africa', 'Uganda': 'Africa',
-    'Madagascar': 'Africa', 'South Africa': 'Africa',
-    'Mexico': 'Americas', 'Peru': 'Americas', 'USA': 'Americas', 'Brazil': 'Americas',
-    'Colombia': 'Americas', 'Cuba': 'Americas', 'Argentina': 'Americas',
-    'Iran': 'Middle East', 'Turkey': 'Middle East', 'Lebanon': 'Middle East',
-    'Saudi Arabia': 'Middle East', 'UAE': 'Middle East', 'Jordan': 'Middle East',
-    'Italy': 'Europe', 'France': 'Europe', 'Spain': 'Europe', 'Greece': 'Europe',
-    'Germany': 'Europe', 'UK': 'Europe',
-    'Australia': 'Oceania', 'New Zealand': 'Oceania', 'Papua New Guinea': 'Oceania',
-    'Fiji': 'Oceania', 'Tasmania': 'Oceania',
-  };
+let activeFilter = 'all', activeSearch = '';
 
-  const EMOJI = {
-    'Asia': '🌏', 'Africa': '🌍', 'Americas': '🌎', 'Middle East': '🕌',
-    'Europe': '🏛️', 'Oceania': '🌊'
-  };
+function render() {
+  let list = RECIPES;
+  if (activeFilter !== 'all') list = list.filter(r => r.region === activeFilter);
+  if (activeSearch) list = list.filter(r => r.title.toLowerCase().includes(activeSearch) || r.country.toLowerCase().includes(activeSearch) || r.description.toLowerCase().includes(activeSearch));
+  document.getElementById('showing').textContent = list.length;
+  if (!list.length) { document.getElementById('grid').innerHTML = '<div class="no-results"><div style="font-size:48px">🍽️</div><h3>No Recipes Found</h3><p>Try a different filter.</p></div>'; return; }
+  document.getElementById('grid').innerHTML = list.map(r => `
+    <a class="recipe-card" href="recipe.html?id=${r.id}">
+      <div class="card-img"><span>${r.emoji}</span><div class="card-country-badge">${r.country}</div></div>
+      <div class="card-body">
+        <div class="card-episode">${r.episode}</div>
+        <div class="card-title">${r.title}</div>
+        <div class="card-desc">${r.description}</div>
+        <div class="card-footer">
+          <span>⏱ ${r.cookTime} mins</span>
+          <span>👤 ${r.servings} servings</span>
+          <span style="margin-left:auto;color:var(--red)">${r.region}</span>
+        </div>
+      </div>
+    </a>`).join('');
+}
 
-  let currentFilter = 'all';
-  let currentSearch = '';
+function doFilter(r, btn) { activeFilter=r; document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); render(); }
+function doSearch(v) { activeSearch=v.toLowerCase(); render(); }
 
-  function renderRecipes(recipes) {
-    const grid = document.getElementById('recipes-grid');
-    if (!recipes.length) {
-      grid.innerHTML = `<div class="empty-state">
-        <div style="font-size:48px">🍽️</div>
-        <h3>No Recipes Found</h3>
-        <p>Try a different filter or add more recipes.</p>
-        <a href="admin.html">Add Recipe</a>
-      </div>`;
-      return;
-    }
-    grid.innerHTML = recipes.map(r => {
-      const region = REGIONS[r.country] || 'World';
-      const imgHtml = r.image
-        ? `<div class="card-img" style="position:relative"><img src="${r.image}" alt="${r.title}"><div class="card-country-badge">${r.country}</div></div>`
-        : `<div class="card-img-placeholder" style="position:relative">${EMOJI[region] || '🍽️'}<div class="card-country-badge">${r.country}</div></div>`;
-      return `
-        <a class="recipe-card" href="recipe.html?id=${r.id}">
-          ${imgHtml}
-          <div class="card-body">
-            <div class="card-episode">${r.episode || 'BEFRS Episode'}</div>
-            <div class="card-title">${r.title}</div>
-            <div class="card-desc">${r.description || ''}</div>
-            <div class="card-footer">
-              <div class="card-meta">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                ${r.cookTime || '?'} mins
-              </div>
-              <div class="card-meta">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-                ${r.servings || '?'} servings
-              </div>
-              <div class="card-meta" style="margin-left:auto;color:var(--red)">
-                ${region}
-              </div>
-            </div>
-          </div>
-        </a>`;
-    }).join('');
-  }
-
-  function filterAndRender() {
-    let recipes = getRecipes();
-    if (currentFilter !== 'all') {
-      recipes = recipes.filter(r => (REGIONS[r.country] || '') === currentFilter);
-    }
-    if (currentSearch.trim()) {
-      const q = currentSearch.toLowerCase();
-      recipes = recipes.filter(r =>
-        r.title.toLowerCase().includes(q) ||
-        (r.country || '').toLowerCase().includes(q) ||
-        (r.description || '').toLowerCase().includes(q)
-      );
-    }
-    renderRecipes(recipes);
-    document.getElementById('showing-count').textContent = recipes.length;
-  }
-
-  function filterRecipes(region, btn) {
-    currentFilter = region;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    filterAndRender();
-  }
-
-  function searchRecipes(val) {
-    currentSearch = val;
-    filterAndRender();
-  }
-
-  function updateStats() {
-    const recipes = getRecipes();
-    document.getElementById('total-count').textContent = recipes.length;
-    const countries = new Set(recipes.map(r => r.country).filter(Boolean));
-    document.getElementById('country-count').textContent = countries.size;
-  }
-
-  updateStats();
-  filterAndRender();
+render();
 </script>
-
 </body>
 </html>
