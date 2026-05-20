@@ -41,10 +41,3 @@ Pure HTML, CSS, JavaScript — no framework, no backend, no database. Intentiona
 
 Hosted on GitHub Pages at zero cost until the business warrants infrastructure investment.
 
----
-
-## Contact
-
-Built by Ezekiel — developer, copywriter, and food business specialist based in Nairobi, Kenya.
-
-Portfolio: [stranger-e.github.io](https://stranger-e.github.io)
